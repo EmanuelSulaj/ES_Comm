@@ -1,0 +1,153 @@
+.customers-page {
+  padding: 30px;
+  background: #f8fafc;
+  min-height: 100vh;
+}
+
+.customers-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.header-stats {
+  display: flex;
+  gap: 20px;
+}
+
+.stat-box {
+  background: white;
+  padding: 15px 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.stat-box span {
+  color: #64748b;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.stat-box p {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+/* Grid Layout */
+.customers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+/* Card Styling */
+.customer-profile-card {
+  background: white;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+  border: 1px solid #f1f5f9;
+}
+
+.customer-profile-card:hover {
+  transform: translateY(-5px);
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.user-avatar {
+  width: 50px;
+  height: 50px;
+  background: #4f46e5;
+  color: white;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.user-badge {
+  background: #f0fdf4;
+  color: #166534;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.user-details h3 {
+  margin: 0;
+  color: #1e293b;
+  font-size: 1.1rem;
+}
+
+.user-details p {
+  color: #64748b;
+  font-size: 0.85rem;
+  margin: 4px 0 20px 0;
+}
+
+.user-stats-row {
+  display: flex;
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.stat-item {
+  flex: 1;
+  text-align: center;
+}
+
+.stat-item:first-child {
+  border-right: 1px solid #e2e8f0;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.7rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stat-value {
+  font-weight: 700;
+  color: #334155;
+  font-size: 1rem;
+}
+
+.last-activity {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.btn-details {
+  width: 100%;
+  padding: 10px;
+  background: #f1f5f9;
+  border: none;
+  border-radius: 8px;
+  color: #475569;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-details:hover {
+  background: #e2e8f0;
+}

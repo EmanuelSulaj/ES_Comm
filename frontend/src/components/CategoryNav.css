@@ -1,0 +1,88 @@
+.category-nav-wrapper {
+  background: white;
+  padding: 20px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.category-nav-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.category-nav {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  flex: 1;
+}
+
+.category-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.category-pill {
+  background: #f3f4f6;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.3s;
+  flex-shrink: 0;
+}
+
+.category-pill:hover {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.category-pill.active {
+  background: #10b981;
+  color: white;
+}
+
+/* Hide the manual scroll buttons since it's now auto-scrolling */
+.scroll-btn {
+  display: none;
+}
+
+/* The wrapper that hides the overflow */
+.category-nav-marquee {
+  overflow: hidden;
+  width: 100%;
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+/* The track that actually moves */
+.category-nav-track {
+  display: flex;
+  gap: 12px;
+  width: max-content;
+  animation: scrollMarquee 20s linear infinite;
+}
+
+/* Pause when user wants to click a category */
+.category-nav-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes scrollMarquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    /* Move by exactly half the width of the track (since we duplicated the list) */
+    transform: translateX(-50%);
+  }
+}

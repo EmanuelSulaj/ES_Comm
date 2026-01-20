@@ -1,0 +1,135 @@
+/* Centering and Width Control */
+.checkout-outer-wrapper {
+  background-color: #ffffff; /* Or #fcfcfc depending on your brand */
+  min-height: 100vh;
+  padding-top: 120px; /* Space for your Header */
+}
+
+.checkout-inner-container {
+  max-width: 1200px; /* This aligns with standard navbar widths */
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.checkout-header {
+  margin-bottom: 40px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 20px;
+}
+
+.checkout-header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+/* The Grid System */
+.checkout-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 80px;
+  align-items: start;
+}
+
+/* Professional Card Styling */
+.checkout-card {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px; 
+  padding: 32px;
+}
+
+.card-element-wrapper {
+  padding: 16px;
+  border: 1px solid #d1d1d1;
+  border-radius: 4px;
+  margin: 24px 0;
+  background: #fff;
+}
+
+.main-pay-btn {
+  width: 100%;
+  padding: 20px;
+  background: #000;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 1px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.main-pay-btn:hover {
+  background: #333;
+}
+
+/* Summary with Product Images */
+.summary-sticky-box {
+  position: sticky;
+  top: 140px;
+  background: #fbfbfb;
+  padding: 24px;
+  border: 1px solid #eee;
+}
+
+.summary-product {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.summary-img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  background: #eee;
+}
+
+.summary-details {
+  flex-grow: 1;
+}
+
+.summary-name {
+  display: block;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.summary-qty {
+  font-size: 0.8rem;
+  color: #777;
+}
+
+.summary-footer {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 2px solid #000;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+}
+
+.summary-row.total {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-top: 15px;
+}
+
+.free-tag {
+  color: #008a00;
+  font-weight: 600;
+}
+
+
+@media (max-width: 1024px) {
+  .checkout-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}

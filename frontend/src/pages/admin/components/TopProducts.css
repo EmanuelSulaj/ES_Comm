@@ -1,0 +1,67 @@
+.top-products-card {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+}
+
+.top-products-card table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+
+.top-products-card th, 
+.top-products-card td {
+  padding: 16px 12px; 
+  border-bottom: 1px solid #eee;
+}
+
+.top-products-card th {
+  color: #888;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+
+.text-left {
+  text-align: left !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.text-right {
+  text-align: right !important;
+  padding-right: 24px; 
+}
+
+
+.badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: inline-block;
+}
+
+.sold-badge {
+  background-color: #eef7ff;
+  color: #3b82f6;
+}
+
+.revenue-badge {
+  background-color: #ebf9f1;
+  color: #22c55e;
+}
+
+.product-name {
+  font-weight: 500;
+  color: #333;
+}
+
+.category-text {
+  color: #666;
+}

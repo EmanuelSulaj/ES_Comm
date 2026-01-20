@@ -1,0 +1,16 @@
+# Ignore all node_modules folders everywhere
+node_modules/
+**/node_modules/
+
+# Ignore environment variables (Secrets)
+.env
+.env.local
+backend/.env
+frontend/.env
+
+# Ignore build files
+dist/
+build/
+
+# System files
+.DS_Store

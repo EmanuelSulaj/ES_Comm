@@ -1,0 +1,196 @@
+.stock-alert-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  height: 100%; 
+}
+
+.stock-alert-header {
+  background: linear-gradient(135deg, #ff4d4d, #f97316);
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icon-wrapper {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 8px;
+  border-radius: 8px;
+  display: flex;
+}
+
+.stock-title {
+  color: white;
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.stock-subtitle {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.8rem;
+  margin: 2px 0 0 0;
+}
+
+.refresh-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.refresh-btn:hover { background: rgba(255, 255, 255, 0.3); }
+
+.spinning { animation: spin 1s linear infinite; }
+
+.stock-list { padding: 15px; }
+
+.stock-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  padding: 12px;
+  border-bottom: 1px solid #f0f0f0;
+  position: relative;
+  padding-bottom: 20px;
+}
+
+.stock-item:last-child { border-bottom: none; }
+
+.stock-item-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.stock-icon-box {
+  padding: 8px;
+  border-radius: 6px;
+  color: white;
+}
+
+.stock-icon-box.critical { background: #fee2e2; color: #ef4444; }
+.stock-icon-box.warning { background: #fff7ed; color: #f97316; }
+
+.product-name {
+  display: block;
+  font-weight: 600;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.product-cat {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+.stock-status { text-align: right; }
+
+.stock-number {
+  font-size: 1.2rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.text-red { color: #ef4444; }
+.text-orange { color: #f97316; }
+
+.units-label { font-size: 0.7rem; color: #aaa; }
+
+.stock-progress-container {
+  position: absolute;
+  bottom: 8px;
+  left: 12px;
+  right: 12px;
+  height: 4px;
+  background: #f0f0f0;
+  border-radius: 10px;
+}
+
+.stock-progress-bar { height: 100%; border-radius: 10px; transition: 0.5s; }
+.bg-red { background: #ef4444; }
+.bg-orange { background: #f97316; }
+
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
+/* Header color change when stock is healthy */
+.stock-alert-header.header-success {
+  background: linear-gradient(135deg, #10b981, #059669); 
+}
+
+
+.stock-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.empty-icon-circle {
+  position: relative;
+  background: #f0fdf4;
+  color: #10b981;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.check-overlay {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background: white;
+  border-radius: 50%;
+}
+
+.stock-empty-state h4 {
+  margin: 0;
+  color: #1f2937;
+  font-size: 1.1rem;
+}
+
+.stock-empty-state p {
+  color: #6b7280;
+  font-size: 0.85rem;
+  margin-top: 8px;
+  max-width: 200px;
+}
+
+
+.stock-loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+  color: #888;
+}
+
+.loading-spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #f97316;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}

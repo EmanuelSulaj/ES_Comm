@@ -1,0 +1,105 @@
+.inventory-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.stock-btn {
+  padding: 4px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.stock-btn.plus {
+  background: #e6f4ea;
+  color: #1e7f43;
+}
+
+.stock-btn.minus {
+  background: #fdecea;
+  color: #b42318;
+}
+
+.stock-btn.set {
+  background: #eef2ff;
+  color: #3730a3;
+}
+
+.out-of-stock {
+  color: #b42318;
+  font-weight: 600;
+}
+
+/* Product cell layout */
+.product-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Inventory product image */
+.product-cell img {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 6px;
+  background: #f5f5f5;
+  flex-shrink: 0;
+}
+
+.admin-page {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.admin-table-wrapper {
+  margin-top: 24px;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 14px 12px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.product-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.product-cell img {
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.inventory-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.stock-btn {
+  min-width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+
+
