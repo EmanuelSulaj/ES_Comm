@@ -1,12 +1,20 @@
 import React from 'react';
-import { useState, useEffect } from 'react'; 
+import { useState, useEffect, useRef } from 'react'; 
 import AddProductModal from './AddProductModal';
+import Pagination from './Pagination';
 
 function ProductList() {
   const [products, setProducts] = useState([]); 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState(null);
+
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [activeFilters, setActiveFilters] = useState({ category: [] });
+  const filterRef = useRef(null);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   // 1. Define the initial form state
   const initialFormState = {
@@ -19,6 +27,17 @@ function ProductList() {
   };
 
   const [formData, setFormData] = useState(initialFormState);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isFilterOpen && filterRef.current && !filterRef.current.contains(event.target)) {
+        setIsFilterOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isFilterOpen]);
+
 
   // 2. Fetch Products
   const fetchProducts = async () => {
@@ -70,8 +89,7 @@ const handleSubmit = async (e, finalData) => {
   
   const method = isEditing ? 'PUT' : 'POST';
 
-  // CRITICAL: We use 'finalData' instead of 'formData' 
-  // because finalData has the permanent Cloudinary URL!
+  
   try {
     const response = await fetch(url, {
       method: method,
@@ -105,45 +123,132 @@ const handleSubmit = async (e, finalData) => {
     }
   };
 
+const handleCheckboxChange = (categoryName) => {
+  setActiveFilters(prev => {
+    const isSelected = prev.category.includes(categoryName);
+    return {
+      ...prev,
+      category: isSelected 
+        ? prev.category.filter(c => c !== categoryName) 
+        : [...prev.category, categoryName]
+    };
+  });
+};
+
+const filteredProducts = products.filter((product) => {
+  if (activeFilters.category.length === 0) return true;
+  return activeFilters.category.includes(product.category?.name);
+});
+
+// PAGINATION LOGIC
+const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+const indexOfLastProduct = currentPage * itemsPerPage;
+const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
+const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+
+// Reset to page 1 if filters change and current page is out of bounds
+useEffect(() => {
+  setCurrentPage(1);
+}, [activeFilters]);
+
+
   return (
-    <div className="admin-content">
-      <div className="content-header">
-        <h1 className="page-title">Products</h1>
-        <button className="btn-primary" onClick={() => setIsModalOpen(true)}>
+  <div className="admin-content">
+    <div className="content-header">
+      <h1 className="page-title">Products</h1>
+
+      {/* Grouping the filter and the add button together */}
+      <div className="header-actions">
+        <div className="filter-wrapper" ref={filterRef}>
+          <button 
+            className="filter-icon-btn" 
+            onClick={() => setIsFilterOpen(!isFilterOpen)}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+            </svg>
+            <span>Filter</span>
+          </button>
+
+      {isFilterOpen && (
+        <div className="filter-dropdown-menu">
+          <h4>Filter by Category</h4>
+          {/* Extract unique categories from your products list */}
+          {[...new Set(products.map(p => p.category?.name))].map(catName => (
+            <label key={catName} className="filter-option">
+              <input 
+                type="checkbox" 
+                checked={activeFilters.category.includes(catName)}
+                onChange={() => handleCheckboxChange(catName)}
+              />
+              {catName}
+            </label>
+          ))}
+          <button className="clear-filter-btn" onClick={() => setActiveFilters({category: []})}>
+            Reset
+          </button>
+        </div>
+      )}
+    </div>
+
+    <button className="btn-primary" onClick={() => setIsModalOpen(true)}>
           Add New Product
         </button>
       </div>
+    </div>
 
       <div className="products-table-container">
         <table className="products-table"> 
           <thead>
             <tr>
+              <th>Image</th>
               <th>Product</th>
               <th>Category</th>
               <th>Price</th>
               <th>Status</th>
-              <th>Actions</th>
+              <th className="actions-header">Actions</th> {/* Add a class here */}
             </tr>
           </thead>
           <tbody>
-            {products.map((product) => (
-              <tr key={product._id}> 
-                <td>{product.name}</td>
-                <td>{product.category?.name || 'No Category'}</td>
-                <td>${product.price}</td>
-                <td>{product.status || 'Active'}</td>
-                <td className="actions-buttons"> 
-                  <button className="action-btn edit" onClick={() => handleEditClick(product)}>
-                    Edit
-                  </button>
-                  <button className="action-btn delete" onClick={() => handleDelete(product._id)}>
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table> 
+
+           {currentProducts.map((product) => (
+    <tr key={product._id}>
+      <td>
+        <img 
+          src={product.image || 'https://via.placeholder.com/50'} 
+          alt={product.name} 
+          className="product-thumbnail"
+        />
+      </td>
+      <td>{product.name}</td>
+      <td>{product.category?.name || 'No Category'}</td>
+      <td>${product.price}</td>
+      <td>{product.status || 'Active'}</td>
+      <td className="actions-cell"> 
+        <div className="actions-wrapper">
+          <button className="action-btn edit" onClick={() => handleEditClick(product)}>
+            Edit
+          </button>
+          <button className="action-btn delete" onClick={() => handleDelete(product._id)}>
+            Delete
+          </button>
+        </div>
+      </td>
+    </tr>
+  ))}
+</tbody>
+        </table>
+        </div>
+
+      <div className="pagination-outside-container">
+        <Pagination 
+      currentPage={currentPage}
+      totalPages={totalPages}
+      indexOfFirstProduct={indexOfFirstProduct}
+      indexOfLastProduct={indexOfLastProduct}
+      totalProducts={filteredProducts.length}
+      onPageChange={(pageNumber) => setCurrentPage(pageNumber)}
+    />
       </div>
 
       <AddProductModal 

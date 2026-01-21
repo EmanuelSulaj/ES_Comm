@@ -29,7 +29,7 @@ const SalesAnalytics = () => {
     <div style={{ padding: '30px', backgroundColor: '#f8fafc', minHeight: '100vh' }}>
       <h2 style={{ marginBottom: '25px', color: '#1e293b' }}>Sales & Inventory Analytics</h2>
 
-      {/* Top Row: Category Distribution */}
+ 
       <div style={{ 
         backgroundColor: 'white', 
         padding: '20px', 
@@ -37,6 +37,7 @@ const SalesAnalytics = () => {
         boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
         marginBottom: '30px' 
       }}>
+     
         <h3 style={{ fontSize: '1.1rem', marginBottom: '20px', color: '#64748b' }}>Inventory Value by Category</h3>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' }}>
           {data.revenueByCat.map((cat) => (
