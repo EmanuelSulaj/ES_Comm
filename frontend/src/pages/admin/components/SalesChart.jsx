@@ -17,7 +17,7 @@ function SalesChart({ data }) {
           <XAxis 
             dataKey="date" 
             tick={{fontSize: 12}} 
-            tickFormatter={(str) => str.split('-').slice(1).join('/')} // Shows MM/DD
+            tickFormatter={(str) => str.split('-').slice(1).join('/')} 
           />
           <YAxis tick={{fontSize: 12}} tickFormatter={(val) => `$${val}`} />
           <Tooltip 

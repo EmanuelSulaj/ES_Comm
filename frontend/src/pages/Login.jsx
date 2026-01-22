@@ -5,8 +5,7 @@ import './Login.css';
 function Login() {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
-    username: '', // Added for registration
-    email: '',    // Used as identifier in login
+    username: '', 
     password: '',
     confirmPassword: ''
   });

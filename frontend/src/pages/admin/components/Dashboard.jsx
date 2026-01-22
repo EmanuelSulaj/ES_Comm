@@ -32,9 +32,14 @@ function Dashboard() {
       const trendResult = await trendRes.json();
       const categoryResult = categoryRes.ok ? await categoryRes.json() : [];
       const topProductResult = await topProductsRes.json();
-      setTopProducts(topProductResult);
       
-      // LOG THIS: This will show you exactly what React receives
+      // DEBUG: Check what data we're receiving
+      console.log("🔍 Top Products Response:", topProductResult);
+      console.log("🔍 Is it an array?", Array.isArray(topProductResult));
+      console.log("🔍 Length:", topProductResult?.length);
+      
+      setTopProducts(topProductResult);
+     
       console.log("📊 Frontend Category Data Received:", categoryResult);
 
       setData(statsResult);
@@ -55,7 +60,7 @@ function Dashboard() {
   };
 
   fetchAllData();
-}, []); // Empty array is correct, but ensure the function is defined INSIDE
+}, []); 
 
   const stats = [
     {

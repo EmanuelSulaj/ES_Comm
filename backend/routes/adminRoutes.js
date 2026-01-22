@@ -6,7 +6,7 @@ const Product = require('../models/Product');
 const Category = require('../models/Category');
 const mongoose = require('mongoose');
 
-// GET: Customers report
+
 router.get('/customers-report', async (req, res) => {
   try {
     const customers = await Order.aggregate([
@@ -128,13 +128,13 @@ router.get('/sales-trend', async (req, res) => {
 router.get('/category-distribution', async (req, res) => {
   try {
     const distribution = await Order.aggregate([
-      // 0. ONLY count paid orders
+      
       { $match: { paymentStatus: "Paid" } },
       
-      // 1. Break order items
+      
       { $unwind: "$orderItems" },
 
-      // 2. Join product (STRICT ObjectId match)
+      
       {
         $lookup: {
           from: "products",
@@ -144,10 +144,10 @@ router.get('/category-distribution', async (req, res) => {
         }
       },
 
-      // 3. Remove items without product
+    
       { $unwind: { path: "$product", preserveNullAndEmptyArrays: false } },
 
-      // 4. Join category
+      
       {
         $lookup: {
           from: "categories",
@@ -157,10 +157,10 @@ router.get('/category-distribution', async (req, res) => {
         }
       },
 
-      // 5. Remove items without category
+     
       { $unwind: { path: "$category", preserveNullAndEmptyArrays: false } },
 
-      // 6. Group by category name
+      
       {
         $group: {
           _id: "$category.name",
@@ -172,7 +172,7 @@ router.get('/category-distribution', async (req, res) => {
         }
       },
 
-      // 7. Shape for frontend
+      
       {
         $project: {
           _id: 0,
@@ -181,7 +181,7 @@ router.get('/category-distribution', async (req, res) => {
         }
       },
       
-      // 8. Sort by value descending
+    
       { $sort: { value: -1 } }
     ]);
 
@@ -193,78 +193,67 @@ router.get('/category-distribution', async (req, res) => {
   }
 });
 
+
 router.get('/top-products', async (req, res) => {
-  try {
-    const topProducts = await Order.aggregate([
-      { $match: { paymentStatus: "Paid" } },
-      { $unwind: "$orderItems" },
-      
-      // Lookup the product
-      {
-        $lookup: {
-          from: "products",
-          localField: "orderItems.product",
-          foreignField: "_id",
-          as: "productInfo"
-        }
-      },
-      { $unwind: { path: "$productInfo", preserveNullAndEmptyArrays: true } },
-      
-      // Lookup the category from product
-      {
-        $lookup: {
-          from: "categories",
-          localField: "productInfo.category",
-          foreignField: "_id",
-          as: "categoryInfo"
-        }
-      },
-      { $unwind: { path: "$categoryInfo", preserveNullAndEmptyArrays: true } },
-
-      {
-        $group: {
-          _id: "$orderItems.product",
-          name: { $first: "$orderItems.name" },
-          // Use category from lookup instead of orderItems
-          category: { 
-            $first: { 
-              $ifNull: [
-                "$categoryInfo.name",           // Try from lookup
-                "$orderItems.category",         // Fallback to stored category
-                "Uncategorized"                 // Final fallback
-              ] 
-            } 
-          },
-          totalSold: { $sum: "$orderItems.qty" },
-          revenue: {
-            $sum: {
-              $multiply: ["$orderItems.qty", "$orderItems.price"]
+    try {
+        const topProducts = await Order.aggregate([
+            { $unwind: "$orderItems" },
+            { 
+                $group: { 
+                    _id: "$orderItems.product", 
+                    sold: { $sum: "$orderItems.qty" },
+                    revenue: { $sum: { $multiply: ["$orderItems.price", "$orderItems.qty"] } } 
+                }
+            },
+            { $sort: { revenue: -1 } },  
+            { $limit: 5 },
+            { 
+                $lookup: { 
+                    from: "products", 
+                    localField: "_id", 
+                    foreignField: "_id", 
+                    as: "productInfo" 
+                } 
+            },
+            { $unwind: "$productInfo" },
+            { 
+                $lookup: { 
+                    from: "categories", 
+                    localField: "productInfo.category", 
+                    foreignField: "_id", 
+                    as: "categoryInfo" 
+                } 
+            },
+            { $unwind: { path: "$categoryInfo", preserveNullAndEmptyArrays: true } },
+            { 
+                $project: { 
+                    _id: "$productInfo._id",
+                    name: "$productInfo.name", 
+                    sold: 1, 
+                    revenue: 1,
+                    categoryName: "$categoryInfo.name"
+                } 
             }
-          }
-        }
-      },
+        ]);
 
-      { $sort: { revenue: -1 } },
-      { $limit: 5 }
-    ]);
-
-    console.log("📊 Top Products (with category lookup):", topProducts);
-    res.json(topProducts);
-  } catch (err) {
-    console.error("Top products error:", err);
-    res.status(500).json({ message: "Failed to fetch top products", error: err.message });
-  }
+        console.log("📦 Backend: Top Products:", topProducts);
+        res.json(topProducts);
+    } catch (err) {
+        console.error('Top products error:', err);
+        res.status(500).json({ message: err.message });
+    }
 });
+
 
 router.get('/low-stock-products', async (req, res) => {
   try {
     const Product = require('../models/Product');
     
     const lowStockProducts = await Product.find({
-      stock: { $lt: 10 } // Products with less than 10 items
+      stock: { $lt: 10 } 
     })
     .populate('category', 'name')
-    .sort({ stock: 1 }) // Sort by lowest stock first
+    .sort({ stock: 1 }) 
     .limit(5);
     
     const formatted = lowStockProducts.map(p => ({
@@ -280,7 +269,6 @@ router.get('/low-stock-products', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
 
 
 module.exports = router;

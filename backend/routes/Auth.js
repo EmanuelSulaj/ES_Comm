@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/User'); // Adjust path as needed
+const User = require('../models/User'); 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -33,7 +33,7 @@ router.post('/register', async (req, res) => {
 
 // --- LOGIN ROUTE ---
 router.post('/login', async (req, res) => {
-  const { identifier, password } = req.body; // 'identifier' can be email or username
+  const { identifier, password } = req.body; 
 
   try {
     // Find user by username OR email

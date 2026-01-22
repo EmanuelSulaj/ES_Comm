@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
-  // Connects the order to the User who bought it
+
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
   },
-  // List of items bought
+  
   orderItems: [
     {
       name: { type: String, required: true },
@@ -30,7 +30,7 @@ const orderSchema = new mongoose.Schema({
   paymentStatus: {
     type: String,
     required: true,
-    default: 'Pending' // Changes to 'Paid' after successful checkout
+    default: 'Pending' 
   },
   createdAt: {
     type: Date,

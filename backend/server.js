@@ -73,9 +73,9 @@ app.post('/api/create-payment-intent', async (req, res) => {
 // 5. PRODUCT ROUTES
 app.get('/api/products', async (req, res) => {
     try {
-        // .populate('category') replaces the ID with the actual category document
+        
         const products = await Product.find()
-            .populate('category', 'name') // Only get the 'name' from the Category
+            .populate('category', 'name') 
             .sort({ createdAt: -1 });
         res.json(products);
     } catch (err) {
@@ -173,7 +173,7 @@ app.post('/api/categories', async (req, res) => {
     }
 });
 
-// PUT (Update) a category
+
 app.put('/api/categories/:id', async (req, res) => {
     try {
         const { name, description } = req.body;
@@ -200,7 +200,7 @@ app.delete('/api/categories/:id', async (req, res) => {
 
 const cleanURI = process.env.MONGO_URI.trim();
 
-// 7. DB CONNECTION & START
+
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("✅ MongoDB Connected"))
     .catch(err => console.error("❌ MongoDB Error:", err.message));
