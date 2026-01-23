@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const Order = require('../models/Order');
 const User = require('../models/User');
+const Product = require('../models/Product'); // ✅ IMPORTANT: Add this import
 
 // POST: Save successful order from checkout
 router.post('/success', async (req, res) => {
@@ -27,21 +28,43 @@ router.post('/success', async (req, res) => {
     const orderItems = items.map((item, index) => {
       console.log(`  Item ${index}:`, {
         name: item.name,
-        category: item.category?.name || item.category,
-        productId: item.productId || item._id || item.product,
-        qty: item.qty || item.quantity,
+        category: item.category,
+        productId: item.productId,
+        qty: item.qty,
         price: item.price
       });
       
       return {
         name: item.name,
-        category: item.category?.name || item.category || "Uncategorized",
-        qty: item.qty || item.quantity,
+        category: item.category || "Uncategorized",
+        qty: item.qty,
         price: item.price,
         image: item.image,
-        product: item.productId || item._id || item.product
+        product: item.productId  // This should be the MongoDB ObjectId
       };
     });
+
+    // ✅ STOCK VALIDATION - Check if all products have enough stock
+    console.log("🔍 Checking stock availability...");
+    for (const item of orderItems) {
+      const product = await Product.findById(item.product);
+      
+      if (!product) {
+        console.error(`❌ Product not found: ${item.product}`);
+        return res.status(404).json({ 
+          message: `Product "${item.name}" not found in database` 
+        });
+      }
+      
+      if (product.stock < item.qty) {
+        console.error(`❌ Insufficient stock for ${product.name}. Available: ${product.stock}, Requested: ${item.qty}`);
+        return res.status(400).json({ 
+          message: `Insufficient stock for "${product.name}". Only ${product.stock} available.` 
+        });
+      }
+      
+      console.log(`  ✅ Stock check passed for ${product.name}: ${product.stock} available, ${item.qty} requested`);
+    }
 
     console.log("📝 Creating order with items:", orderItems);
 
@@ -56,13 +79,37 @@ router.post('/success', async (req, res) => {
     console.log("💾 Saving order...");
     await newOrder.save();
     
-    console.log("✅ Order saved successfully:", newOrder._id);
+    // ✅ DECREASE STOCK - Update product stock after order is saved
+    console.log("📉 Updating product stock...");
+    for (const item of orderItems) {
+      const updatedProduct = await Product.findByIdAndUpdate(
+        item.product,
+        { $inc: { stock: -item.qty } }, // Decrease stock by quantity ordered
+        { new: true } // Return the updated document
+      );
+      
+      if (updatedProduct) {
+        console.log(`  ✅ Decreased stock for "${item.name}" by ${item.qty}. New stock: ${updatedProduct.stock}`);
+      } else {
+        console.error(`  ⚠️ Could not update stock for product ${item.product}`);
+      }
+    }
     
-    res.status(201).json({ message: "Order recorded", order: newOrder });
+    console.log("✅ Order saved successfully:", newOrder._id);
+    console.log("✅ Stock updated for all products");
+    
+    res.status(201).json({ 
+      message: "Order recorded and stock updated", 
+      order: newOrder 
+    });
+    
   } catch (err) {
     console.error("❌ Order Save Error:", err);
     console.error("Error stack:", err.stack);
-    res.status(500).json({ message: "Error saving order", error: err.message });
+    res.status(500).json({ 
+      message: "Error saving order", 
+      error: err.message 
+    });
   }
 });
 

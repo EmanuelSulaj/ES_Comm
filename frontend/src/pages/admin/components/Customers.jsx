@@ -1,16 +1,36 @@
 import React, { useEffect, useState } from 'react';
+import Pagination from './Pagination';
 import './Customers.css';
 
 const Customers = () => {
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedOrders, setSelectedOrders] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [modalLoading, setModalLoading] = useState(false);
+
+  const handleViewHistory = async (userId) => {
+    setModalLoading(true);
+    setShowModal(true);
+    try {
+      const response = await fetch(`http://localhost:5000/api/admin/customer-orders/${userId}`);
+      const data = await response.json();
+      setSelectedOrders(data);
+    } catch (error) {
+      console.error("History fetch error:", error);
+    } finally {
+      setModalLoading(false);
+    }
+  };
+  
 
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
         const response = await fetch('http://localhost:5000/api/admin/customers-report');
         const data = await response.json();
-        // Ensure data is an array before setting state
+        
         setCustomers(Array.isArray(data) ? data : []);
         setLoading(false);
       } catch (error) {
@@ -23,9 +43,20 @@ const Customers = () => {
   }, []);
 
   
+  const cardsPerPage = 8;
+  const totalProducts = customers.length;
+  const totalPages = Math.ceil(totalProducts / cardsPerPage);
+  
+  const indexOfLastProduct = currentPage * cardsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - cardsPerPage;
+  
+  const currentCustomers = customers.slice(indexOfFirstProduct, indexOfLastProduct);
+  
   const totalRevenue = customers?.reduce((sum, c) => sum + (c.totalSpent || 0), 0) || 0;
 
   if (loading) return <div className="loader">Loading Customers...</div>;
+
+
 
   return (
     <div className="customers-page">
@@ -61,7 +92,7 @@ const Customers = () => {
               </div>
               
               <div className="user-details">
-                {/* FIX: Fallback for missing username/email */}
+                
                 <h3>{customer.username || "Unknown User"}</h3>
                 <p>{customer.email || "No Email Provided"}</p>
               </div>
@@ -85,7 +116,8 @@ const Customers = () => {
                   : 'N/A'}
               </div>
 
-              <button className="btn-details">View Full History</button>
+              <button className="btn-details"
+              onClick={() => handleViewHistory(customer._id)}>View Full History</button>
             </div>
           ))
         ) : (
@@ -95,7 +127,74 @@ const Customers = () => {
           </div>
         )}
       </div>
-    </div>
+
+      {customers.length > 0 && (
+        <div style={{ marginTop: '80px' }}>
+        <Pagination 
+          currentPage={currentPage}
+          totalPages={totalPages}
+          indexOfFirstProduct={indexOfFirstProduct}
+          indexOfLastProduct={indexOfLastProduct}
+          totalProducts={customers.length}
+          onPageChange={setCurrentPage}
+          itemType='customers'
+        />
+        </div>
+      )}
+{/* --- HISTORY MODAL --- */}
+      {showModal && (
+        <div className="modal-overlay" onClick={() => setShowModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>Order History</h2>
+              <button className="close-btn" onClick={() => setShowModal(false)}>×</button>
+            </div>
+            
+            <div className="modal-body">
+              {modalLoading ? (
+                <div className="modal-loader">Loading orders...</div>
+              ) : selectedOrders.length > 0 ? (
+                <table className="history-table">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Items</th>
+                      <th>Total Amount</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {selectedOrders.map((order) => (
+                      <tr key={order._id}>
+                        <td>{new Date(order.createdAt).toLocaleDateString()}</td>
+                        <td>
+                          {/* Map through your orderItems schema */}
+                          {order.orderItems.map(item => (
+                            <div key={item._id} style={{fontSize: '0.85rem'}}>
+                              {item.qty}x {item.name}
+                            </div>
+                          ))}
+                        </td>
+                        <td>${order.totalAmount?.toFixed(2)}</td>
+                        <td>
+                          <span className={`status-pill ${order.paymentStatus?.toLowerCase()}`}>
+                            {order.paymentStatus}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <div className="no-history">
+                  <p>No order history found for this customer.</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+      </div> 
   );
 };
 

@@ -6,7 +6,7 @@
 
 
 .admin-sidebar {
-  width: 280px;
+  width: 300px;
   background: white;
   border-right: 1px solid #e5e7eb;
   display: flex;
@@ -20,12 +20,13 @@
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
 }
 
+
 .sidebar-header {
-  padding: 24px 20px;
-  border-bottom: 1px solid #e5e7eb;
+  height: 70px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  padding: 0 16px; 
+  border-bottom: 1px solid #f1f5f9;
 }
 
 .admin-logo {
@@ -33,36 +34,39 @@
   font-weight: 700;
   color: #10b981;
   text-decoration: none;
+  line-height: 1;
 }
+
 
 .sidebar-nav {
   flex: 1;
-  padding: 16px 0; 
+  padding: 20px 0; 
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 4px;
 }
+
 
 .nav-item {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 24px;
-  width : 100%;
-  border-radius: 0;
+  margin: 2px 8px;
+  padding: 12px 12px; 
+  width: calc(100% - 16px);
+  box-sizing: border-box;
+  border-radius: 8px;
   border: none;
   background: transparent;
   color: #374151;
   font-size: 15px;
   font-weight: 500;
-  border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s;
   text-align: left;
   font-family: inherit;
   white-space: nowrap;
-  box-sizing: border-box;
 }
 
 .nav-item:hover {
@@ -75,50 +79,32 @@
   color: white;
 }
 
-.nav-item.active svg {
-  color: white;
-}
-
 .nav-item svg {
   flex-shrink: 0;
-  color: inherit;
+  
+  margin: 0; 
 }
 
-.nav-item {
-  position: relative;
-}
-
-.submenu-arrow {
-  margin-left: auto;
-  transition: transform 0.2s;
-  color: inherit;
-}
-
-.submenu-arrow.open {
-  transform: rotate(90deg);
-}
 
 .submenu {
-  margin-left: 0;     
-  margin-top: 4px;
-  margin-bottom: 4px;
   display: flex;
   flex-direction: column;
   gap: 2px;
+  width: 100%;
 }
 
 .submenu-item {
-  padding: 10px 24px 10px 52px;
-  border: none;
-  background: transparent;
+  display: flex;
+  align-items: center;
+  margin: 0 8px;
+  padding: 10px 16px 10px 40px; 
+  width: calc(100% - 16px);
+  border-radius: 8px;
   color: #6b7280;
   font-size: 14px;
-  font-weight: 500;
-  border-radius: 0;
-  cursor: pointer;
+  text-decoration: none;
   transition: all 0.2s;
-  text-align: left;
-  font-family: inherit;
+  box-sizing: border-box;
 }
 
 .submenu-item:hover {
@@ -132,9 +118,10 @@
   font-weight: 600;
 }
 
+
 .sidebar-footer {
-  padding: 16px 12px;
-  border-top: 1px solid #e5e7eb;
+  padding: 16px;
+  border-top: 1px solid #f1f5f9;
 }
 
 .sidebar-link {
@@ -158,24 +145,20 @@
 
 .admin-main {
   flex: 1;
-  margin-left: 280px;
+  margin-left: 300px; 
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  transition: margin-left 0.3s ease;
 }
 
 .admin-header {
-  background: white;
-  border-bottom: 1px solid #e5e7eb;
-  padding: 20px 32px;
+  height: 70px; 
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  justify-content: flex-end; 
+  align-items: center; 
+  padding: 0 30px;
+  background-color: white;
+  border-bottom: 1px solid #f1f5f9;
 }
 
 .header-left {
@@ -781,7 +764,7 @@
   color: #333;
 }
 
-/* Ensures the close button stays clear of the edge */
+
 .close-x {
   background: none;
   border: none;
@@ -803,29 +786,29 @@
 }
 
 
-/* Target all inputs, selects, and your specific modal-textarea */
+
 .form-group input,
 .form-group select,
 .modal-textarea {
   width: 100%;
   padding: 10px 16px;
-  border: 1px solid #e5e7eb; /* Matches the light gray in your sidebar */
+  border: 1px solid #e5e7eb; 
   border-radius: 8px;
   font-size: 14px;
   color: #374151;
   background: white;
   transition: all 0.2s ease;
-  outline: none; /* Removes the default browser black outline */
+  outline: none; 
 }
 
-/* THE FIX: Apply green border on hover */
+
 .form-group input:hover,
 .form-group select:hover,
 .modal-textarea:hover {
-  border-color: #10b981; /* This is the green from your .admin-logo */
+  border-color: #10b981; 
 }
 
-/* Focus state: Green border and subtle glow when typing */
+
 .form-group input:focus,
 .form-group select:focus,
 .modal-textarea:focus {
@@ -945,28 +928,28 @@
 .center-modal textarea {
   width: 100%;
   padding: 12px;
-  border: 1px solid #ddd; /* Light gray default */
+  border: 1px solid #ddd; 
   border-radius: 6px;
   font-size: 14px;
   transition: all 0.2s ease-in-out;
   outline: none;
 }
 
-/* 1. HOVER STATE: Subtle gray-to-darker-gray transition */
+
 .admin-input:hover, 
 .center-modal input:hover, 
 .center-modal textarea:hover {
-  border-color: #bbb; /* Becomes slightly darker on hover */
-  background-color: #fafafa; /* Very subtle background shift */
+  border-color: #bbb; 
+  background-color: #fafafa; 
 }
 
-/* 2. FOCUS STATE (Selected): Emerald Green */
+
 .admin-input:focus, 
 .center-modal input:focus, 
 .center-modal textarea:focus {
-  border-color: #10b981 !important; /* Emerald Green */
-  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15) !important; /* Soft green glow */
-  background-color: #fff !important; /* Return to pure white when typing */
+  border-color: #10b981 !important; 
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15) !important; 
+  background-color: #fff !important; 
   border-width: 1.5px;
 }
 .btn-secondary {
@@ -1092,7 +1075,7 @@
   transition: all 0.2s ease;
 }
 
-/* Visual hover effect */
+
 .page-btn:hover:not(:disabled), 
 .page-number:hover:not(.active) {
   border-color: #10b981;
@@ -1116,27 +1099,25 @@
   cursor: not-allowed;
 }
 
-/* Container for the Title and Filter Button */
+
 .inventory-header {
   display: flex;
   justify-content: space-between; 
   align-items: center;
   margin-bottom: 24px;
   
-  /* CRITICAL: Match this to your table's width or container padding */
   max-width: 1200px; 
   margin-left: auto;
   margin-right: auto;
   width: 100%;
 }
 
-/* Ensure the table wrapper also follows the same width for alignment */
 .admin-table-wrapper {
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
   width: 100%;
-  overflow-x: auto; /* Keeps table scrollable on small screens */
+  overflow-x: auto; 
 }
 
 .filter-dropdown-menu {

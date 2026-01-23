@@ -6,12 +6,13 @@ const Pagination = ({
   indexOfFirstProduct, 
   indexOfLastProduct, 
   totalProducts, 
-  onPageChange 
+  onPageChange,
+  itemType = 'products'
 }) => {
   return (
     <div className="pagination-outside-container">
       <div className="pagination-info">
-        Showing {totalProducts > 0 ? indexOfFirstProduct + 1 : 0} to {Math.min(indexOfLastProduct, totalProducts)} of {totalProducts} products
+        Showing {totalProducts > 0 ? indexOfFirstProduct + 1 : 0} to {Math.min(indexOfLastProduct, totalProducts)} of {totalProducts} {itemType}
       </div>
       <div className="pagination-buttons">
         <button 

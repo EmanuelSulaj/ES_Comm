@@ -96,7 +96,7 @@ useEffect(() => {
 
   if (loading) return <p className="admin-loading">Loading inventory...</p>;
 
-// 1. First, calculate the filtered list (You already have this part)
+
 const filteredProducts = products.filter((product) => {
   const categoryMatch = activeFilters.category.length === 0 || 
                         activeFilters.category.includes(product.category?.name);
@@ -235,6 +235,7 @@ const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastP
         </table>
       </div>
       <div className="pagination-outside-wrapper">
+        <div style={{ marginTop: '80px', paddingBottom: '50px' }}>
         <Pagination 
           currentPage={currentPage}
           totalPages={totalPages}
@@ -244,6 +245,7 @@ const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastP
           onPageChange={(pageNumber) => setCurrentPage(pageNumber)}
         />
       </div>
+    </div>
     </div>
   );
 }

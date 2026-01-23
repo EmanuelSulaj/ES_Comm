@@ -271,6 +271,19 @@ router.get('/low-stock-products', async (req, res) => {
 });
 
 
+router.get('/customer-orders/:userId', async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const orders = await Order.find({ user: userId })
+            .sort({ createdAt: -1 });
+        res.json(orders);
+    } catch (err) {
+        console.error("Backend Error:", err);
+        res.status(500).json({ message: "Server error", error: err.message });
+    }
+});
+
+
 module.exports = router;
 
 

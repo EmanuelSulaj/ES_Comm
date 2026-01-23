@@ -1,70 +1,69 @@
 import React from 'react';  
-import { Link } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { menuItems } from '../data/menuItems';
 
-function Sidebar({ activeSection, setActiveSection, productsSubmenuOpen, setProductsSubmenuOpen }) {
+function Sidebar({ productsSubmenuOpen, setProductsSubmenuOpen }) {
   return (
     <aside className="admin-sidebar">
       <div className="sidebar-header">
         <Link to="/" className="admin-logo">EScomm.</Link>
       </div>
+
       <nav className="sidebar-nav">
         {menuItems.map((item) => (
           <div key={item.id}>
-            <button
-              className={`nav-item ${activeSection === item.id || (item.id === 'products' && (activeSection === 'product-list' || activeSection === 'categories')) ? 'active' : ''}`}
-              onClick={() => {
-                if (item.id === 'products') {
-                  setProductsSubmenuOpen(!productsSubmenuOpen);
-                  if (!productsSubmenuOpen) {
-                    setActiveSection('product-list');
-                  }
-                } else {
-                  setActiveSection(item.id);
-                }
-              }}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d={item.iconPath} />
-              </svg>
-              <span>{item.label}</span>
-              {item.id === 'products' && (
+            {item.id === 'products' ? (
+              /* THE DROPDOWN TOGGLE BUTTON */
+              <button
+                className={`nav-item ${productsSubmenuOpen ? 'submenu-open' : ''}`}
+                onClick={() => setProductsSubmenuOpen(!productsSubmenuOpen)}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d={item.iconPath} />
+                </svg>
+                <span>{item.label}</span>
                 <svg 
                   className={`submenu-arrow ${productsSubmenuOpen ? 'open' : ''}`}
-                  width="16" 
-                  height="16" 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  strokeWidth="2"
+                  width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
                 >
                   <path d="M9 18l6-6-6-6" />
                 </svg>
-              )}
-            </button>
+              </button>
+            ) : (
+              /* STANDARD NAV LINKS */
+              <NavLink
+                to={item.id === 'dashboard' ? '/admin' : `/admin/${item.id}`}
+                end={item.id === 'dashboard'} 
+                className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d={item.iconPath} />
+                </svg>
+                <span>{item.label}</span>
+              </NavLink>
+            )}
+
+            
             {item.id === 'products' && productsSubmenuOpen && (
               <div className="submenu">
-                <button
-                  className={`submenu-item ${activeSection === 'product-list' ? 'active' : ''}`}
-                  onClick={() => {
-                    setActiveSection('product-list');
-                  }}
+                <NavLink
+                  to="/admin/product-list"
+                  className={({ isActive }) => `submenu-item ${isActive ? 'active' : ''}`}
                 >
                   <span>Product List</span>
-                </button>
-                <button
-                  className={`submenu-item ${activeSection === 'categories' ? 'active' : ''}`}
-                  onClick={() => {
-                    setActiveSection('categories');
-                  }}
+                </NavLink>
+                <NavLink
+                  to="/admin/categories"
+                  className={({ isActive }) => `submenu-item ${isActive ? 'active' : ''}`}
                 >
                   <span>Categories</span>
-                </button>
+                </NavLink>
               </div>
             )}
           </div>
         ))}
       </nav>
+
       <div className="sidebar-footer">
         <Link to="/" className="sidebar-link">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -78,4 +77,3 @@ function Sidebar({ activeSection, setActiveSection, productsSubmenuOpen, setProd
 }
 
 export default Sidebar;
-

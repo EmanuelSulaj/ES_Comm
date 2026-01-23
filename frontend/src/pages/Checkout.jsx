@@ -20,7 +20,7 @@ const CheckoutForm = () => {
   const snapshot = JSON.parse(localStorage.getItem('order_snapshot'));
   const isBuyNow = Array.isArray(snapshot) && snapshot.length > 0;
 
-  // 🔒 Single source of truth
+  
   const items = isBuyNow ? snapshot : cart;
 
   const total = items.reduce(
@@ -40,7 +40,7 @@ const CheckoutForm = () => {
     setIsProcessing(true);
 
     try {
-      // 🔐 Create Stripe payment intent
+    
       const response = await fetch('http://localhost:5000/api/create-payment-intent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -62,13 +62,13 @@ const CheckoutForm = () => {
       }
 
       if (result.paymentIntent.status === 'succeeded') {
-        // 🧾 Save snapshot ONLY if cart checkout
+        
         if (!isBuyNow) {
           localStorage.setItem('order_snapshot', JSON.stringify(items));
           localStorage.setItem('order_total', total.toFixed(2));
         }
 
-        // 🔑 Unique session ID for deduplication
+        
         localStorage.setItem('stripe_session_id', crypto.randomUUID());
 
         if (!isBuyNow) {
