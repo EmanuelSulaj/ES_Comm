@@ -2,8 +2,10 @@ import React from 'react';
 import { useState, useEffect, useRef } from 'react'; 
 import AddProductModal from './AddProductModal';
 import Pagination from './Pagination';
+import { useSearch } from '../../../Context/SearchContext';
 
 function ProductList() {
+  const { searchQuery } = useSearch();
   const [products, setProducts] = useState([]); 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -136,8 +138,17 @@ const handleCheckboxChange = (categoryName) => {
 };
 
 const filteredProducts = products.filter((product) => {
-  if (activeFilters.category.length === 0) return true;
-  return activeFilters.category.includes(product.category?.name);
+  // Category filter
+  const categoryMatch = activeFilters.category.length === 0 || 
+    activeFilters.category.includes(product.category?.name);
+  
+  // Search filter
+  const searchMatch = !searchQuery || 
+    product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    product.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    product.category?.name?.toLowerCase().includes(searchQuery.toLowerCase());
+  
+  return categoryMatch && searchMatch;
 });
 
 // PAGINATION LOGIC
@@ -146,10 +157,10 @@ const indexOfLastProduct = currentPage * itemsPerPage;
 const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
 const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
 
-// Reset to page 1 if filters change and current page is out of bounds
+// Reset to page 1 if filters or search change and current page is out of bounds
 useEffect(() => {
   setCurrentPage(1);
-}, [activeFilters]);
+}, [activeFilters, searchQuery]);
 
 
   return (

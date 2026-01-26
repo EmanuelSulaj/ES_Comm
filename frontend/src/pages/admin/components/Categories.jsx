@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import AddCategoryModal from "./AddCategoryModal"; 
 import EditCategoryModal from "./EditCategoryModal";
+import { useSearch } from '../../../Context/SearchContext';
 
 function Categories() {
+  const { searchQuery } = useSearch();
   const [categories, setCategories] = useState([]); 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
@@ -77,6 +79,16 @@ const handleUpdateCategory = async (name, description) => {
     }
   };
 
+  // Filter categories based on search query
+  const filteredCategories = categories.filter(category => {
+    if (!searchQuery) return true;
+    const query = searchQuery.toLowerCase();
+    return (
+      category.name?.toLowerCase().includes(query) ||
+      category.description?.toLowerCase().includes(query)
+    );
+  });
+
   return (
     <> 
       <div className="admin-content">
@@ -92,7 +104,8 @@ const handleUpdateCategory = async (name, description) => {
         </div>
         
         <div className="categories-grid">
-          {categories.map((category) => (
+          {filteredCategories.length > 0 ? (
+            filteredCategories.map((category) => (
             <div key={category._id} className="category-card">
               <div className="category-header">
                 <h3>{category.name}</h3>
@@ -110,7 +123,12 @@ const handleUpdateCategory = async (name, description) => {
               <p className="category-count">{category.count} products</p>
               <div className="category-description">{category.description}</div>
             </div>
-          ))}
+          ))
+          ) : (
+            <div className="no-data">
+              <p>No categories found matching your search.</p>
+            </div>
+          )}
         </div>
       </div>
 

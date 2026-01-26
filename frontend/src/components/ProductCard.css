@@ -5,6 +5,9 @@
   transition: transform 0.3s, box-shadow 0.3s;
   cursor: pointer;
   border: 1px solid #f3f4f6;
+  /* Prevent layout shifts */
+  contain: layout style;
+  will-change: transform;
 }
 
 .product-card:hover {
@@ -21,6 +24,7 @@
   justify-content: center;
   padding: 20px;
   overflow: hidden;
+  position: relative;
 }
 
 .product-image img {
@@ -122,4 +126,45 @@
 .product-card:hover .add-btn {
   opacity: 1;
   transform: translateY(0);
+}
+
+.favorite-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  color: #9ca3af;
+  will-change: transform, background-color, color;
+}
+
+.favorite-btn:hover {
+  background: white;
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.favorite-btn.active {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.favorite-btn.active:hover {
+  background: rgba(239, 68, 68, 0.2);
+}
+
+.favorite-btn svg {
+  width: 20px;
+  height: 20px;
+  transition: fill 0.2s ease;
 }

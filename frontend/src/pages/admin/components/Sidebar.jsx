@@ -1,8 +1,11 @@
 import React from 'react';  
 import { NavLink, Link } from 'react-router-dom';
 import { menuItems } from '../data/menuItems';
+import { useNotifications } from '../../../Context/NotificationContext';
 
 function Sidebar({ productsSubmenuOpen, setProductsSubmenuOpen }) {
+  const { unreadCount } = useNotifications();
+  
   return (
     <aside className="admin-sidebar">
       <div className="sidebar-header">
@@ -40,6 +43,9 @@ function Sidebar({ productsSubmenuOpen, setProductsSubmenuOpen }) {
                   <path d={item.iconPath} />
                 </svg>
                 <span>{item.label}</span>
+                {item.id === 'notifications' && unreadCount > 0 && (
+                  <span className="notification-badge">{unreadCount > 99 ? '99+' : unreadCount}</span>
+                )}
               </NavLink>
             )}
 

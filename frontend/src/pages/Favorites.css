@@ -1,0 +1,81 @@
+.favorites-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 120px 20px 60px;
+  min-height: calc(100vh - 200px);
+}
+
+.favorites-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.favorites-header h1 {
+  font-size: 36px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 8px 0;
+}
+
+.favorites-subtitle {
+  font-size: 16px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  font-size: 18px;
+  color: #6b7280;
+}
+
+.no-favorites {
+  text-align: center;
+  padding: 80px 20px;
+  color: #6b7280;
+}
+
+.no-favorites svg {
+  margin: 0 auto 24px;
+  color: #d1d5db;
+}
+
+.no-favorites h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 12px 0;
+}
+
+.no-favorites p {
+  font-size: 16px;
+  margin: 0 0 24px 0;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.shop-link {
+  display: inline-block;
+  background: #10b981;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.shop-link:hover {
+  background: #059669;
+}
+
+@media (max-width: 768px) {
+  .favorites-header h1 {
+    font-size: 28px;
+  }
+}
+

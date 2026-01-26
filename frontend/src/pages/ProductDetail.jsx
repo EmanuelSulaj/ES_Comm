@@ -23,7 +23,7 @@ function ProductDetail() {
     const fetchProductAndRelated = async () => {
       try {
         setLoading(true);
-        // 1. Fetch the specific product from Backend
+
         const res = await fetch(`http://localhost:5000/api/products/${id}`);
         if (!res.ok) throw new Error("Product not found");
         const data = await res.json();
@@ -35,14 +35,14 @@ function ProductDetail() {
 
         const related = allData
   .filter(p => {
-    // 1. Exclude the current product
+  
     const isNotCurrent = p._id !== id;
 
-    // 2. Get IDs as strings (handles both populated objects and plain strings)
+   
     const pCatId = p.category?._id?.toString() || p.category?.toString();
     const currentCatId = data.category?._id?.toString() || data.category?.toString();
 
-    // 3. Compare the string values
+    
     return isNotCurrent && pCatId === currentCatId;
   })
   .slice(0, 4);
@@ -69,7 +69,7 @@ function ProductDetail() {
   const handleBuyNow = () => {
   localStorage.removeItem('order_snapshot');
 
-  // Save a single-product snapshot
+
   const snapshot = [{
     _id: product._id,
     name: product.name,
@@ -143,7 +143,7 @@ if (!product) {
               <button className="buy-now-btn" onClick={handleBuyNow}>Buy It Now</button>
             </div>
 
-            {/* Tabs Section */}
+           
             <div className="product-tabs">
               <button className={`tab ${activeTab === 'description' ? 'active' : ''}`} onClick={() => setActiveTab('description')}>Description</button>
               <button className={`tab ${activeTab === 'details' ? 'active' : ''}`} onClick={() => setActiveTab('details')}>Details</button>
@@ -155,7 +155,7 @@ if (!product) {
           </div>
         </div>
 
-        {/* Dynamic Related Products */}
+     
         {relatedProducts.length > 0 && (
           <section className="related-products-section">
             <h2 className="related-products-title">Related Products</h2>

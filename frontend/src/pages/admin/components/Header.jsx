@@ -1,11 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { menuItems } from '../data/menuItems';
+import { useSearch } from '../../../Context/SearchContext';
 
 function Header({ activeSection }) {
-  const getTitle = () => {
-    if (activeSection === 'product-list') return 'Product List';
-    if (activeSection === 'categories') return 'Categories';
-    return menuItems.find(item => item.id === activeSection)?.label || 'Dashboard';
+  const { searchQuery, setSearchQuery } = useSearch();
+  const [localSearch, setLocalSearch] = useState('');
+
+  const getPlaceholder = () => {
+    const section = activeSection || 'dashboard';
+    if (section === 'product-list' || section === 'inventory') return 'Search products...';
+    if (section === 'customers') return 'Search customers...';
+    if (section === 'categories') return 'Search categories...';
+    return 'Search...';
+  };
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setLocalSearch(value);
+    setSearchQuery(value);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      setSearchQuery(localSearch);
+    }
   };
 
   return (
@@ -18,7 +36,13 @@ function Header({ activeSection }) {
             <circle cx="11" cy="11" r="8" />
             <path d="m21 21-4.35-4.35" />
           </svg>
-          <input type="text" placeholder="Search..." />
+          <input 
+            type="text" 
+            placeholder={getPlaceholder()}
+            value={localSearch}
+            onChange={handleSearchChange}
+            onKeyPress={handleKeyPress}
+          />
         </div>
         <div className="header-user">
           <div className="user-avatar">

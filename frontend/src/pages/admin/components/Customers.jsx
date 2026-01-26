@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Pagination from './Pagination';
+import { useSearch } from '../../../Context/SearchContext';
 import './Customers.css';
 
 const Customers = () => {
+  const { searchQuery } = useSearch();
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -42,15 +44,31 @@ const Customers = () => {
     fetchCustomers();
   }, []);
 
+  // Reset to page 1 when search query changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
+
+  
+  // Filter customers based on search query
+  const filteredCustomers = customers.filter(customer => {
+    if (!searchQuery) return true;
+    const query = searchQuery.toLowerCase();
+    return (
+      customer.username?.toLowerCase().includes(query) ||
+      customer.email?.toLowerCase().includes(query) ||
+      customer._id?.toLowerCase().includes(query)
+    );
+  });
   
   const cardsPerPage = 8;
-  const totalProducts = customers.length;
+  const totalProducts = filteredCustomers.length;
   const totalPages = Math.ceil(totalProducts / cardsPerPage);
   
   const indexOfLastProduct = currentPage * cardsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - cardsPerPage;
   
-  const currentCustomers = customers.slice(indexOfFirstProduct, indexOfLastProduct);
+  const currentCustomers = filteredCustomers.slice(indexOfFirstProduct, indexOfLastProduct);
   
   const totalRevenue = customers?.reduce((sum, c) => sum + (c.totalSpent || 0), 0) || 0;
 
@@ -78,8 +96,8 @@ const Customers = () => {
       </div>
 
       <div className="customers-grid">
-        {customers.length > 0 ? (
-          customers.map((customer) => (
+        {filteredCustomers.length > 0 ? (
+          currentCustomers.map((customer) => (
             <div key={customer._id} className="customer-profile-card">
               <div className="card-top">
                 <div className="user-avatar">
@@ -128,14 +146,14 @@ const Customers = () => {
         )}
       </div>
 
-      {customers.length > 0 && (
+      {filteredCustomers.length > 0 && (
         <div style={{ marginTop: '80px' }}>
         <Pagination 
           currentPage={currentPage}
           totalPages={totalPages}
           indexOfFirstProduct={indexOfFirstProduct}
           indexOfLastProduct={indexOfLastProduct}
-          totalProducts={customers.length}
+          totalProducts={filteredCustomers.length}
           onPageChange={setCurrentPage}
           itemType='customers'
         />

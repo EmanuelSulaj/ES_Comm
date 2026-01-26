@@ -1,11 +1,16 @@
-import React from 'react';  
-import { useState } from 'react'; // 👈 Import useState
+import React, { memo, useMemo } from 'react';  
+import { useState } from 'react';
 import ProductCard from './ProductCard';
 import './ProductGrid.css';
 
-function ProductGrid({ title, subtitle, products }) {
+const ProductGrid = memo(function ProductGrid({ title, subtitle, products }) {
   // 1. Set the initial number of products to show (e.g., 8)
   const [visibleCount, setVisibleCount] = useState(8);
+  
+  // Memoize displayed products to prevent unnecessary re-renders
+  const displayedProducts = useMemo(() => {
+    return products && products.length > 0 ? products.slice(0, visibleCount) : [];
+  }, [products, visibleCount]);
 
   // 2. Function to increase the count
   const showMore = (e) => {
@@ -31,9 +36,8 @@ function ProductGrid({ title, subtitle, products }) {
         </div>
 
         <div className="product-grid">
-          {products && products.length > 0 ? (
-            // 4. Use .slice() to limit the products displayed
-            products.slice(0, visibleCount).map((product) => (
+          {displayedProducts.length > 0 ? (
+            displayedProducts.map((product) => (
               <ProductCard key={product._id} product={product} />
             ))
           ) : (
@@ -43,6 +47,6 @@ function ProductGrid({ title, subtitle, products }) {
       </div>
     </section>
   );
-}
+});
 
 export default ProductGrid;

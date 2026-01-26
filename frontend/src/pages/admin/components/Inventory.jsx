@@ -1,8 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Pagination from './Pagination';
+import { useSearch } from '../../../Context/SearchContext';
 import './Inventory.css';
 
 const Inventory = () => {
+  const { searchQuery } = useSearch();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -47,6 +49,11 @@ useEffect(() => {
 
     fetchProducts();
   }, []);
+
+  // Reset to page 1 when search query or filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, activeFilters]);
 
   
   const updateStock = async (id, amount) => {
@@ -111,7 +118,13 @@ const filteredProducts = products.filter((product) => {
   if (activeFilters.priceRange === '50-500') priceMatch = product.price >= 50 && product.price <= 500;
   if (activeFilters.priceRange === 'over500') priceMatch = product.price > 500;
 
-  return categoryMatch && stockMatch && priceMatch;
+  // Search filter
+  const searchMatch = !searchQuery || 
+    product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    product.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    product.category?.name?.toLowerCase().includes(searchQuery.toLowerCase());
+
+  return categoryMatch && stockMatch && priceMatch && searchMatch;
 });
 
 

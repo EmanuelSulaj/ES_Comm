@@ -45,6 +45,14 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 24px;
+  /* Prevent layout shifts */
+  contain: layout;
+  will-change: contents;
+}
+
+.product-grid > * {
+  /* Ensure stable positioning */
+  min-height: 0;
 }
 
 @media (max-width: 768px) {

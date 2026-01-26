@@ -11,7 +11,9 @@ const salesRoutes = require('./routes/Sales');
 const AuthRoutes = require('./routes/Auth');
 const orderRoutes = require('./routes/orderRoutes');
 const adminRoutes = require('./routes/adminRoutes');
-const InventoryRoutes = require('./routes/inventory');  
+const InventoryRoutes = require('./routes/inventory');
+const notificationRoutes = require('./routes/notificationRoutes');
+const favoriteRoutes = require('./routes/favoriteRoutes');  
 
 dotenv.config();
 const app = express();
@@ -50,6 +52,8 @@ app.use('/api/auth', AuthRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/inventory', InventoryRoutes);
+app.use('/api/notifications', notificationRoutes);
+app.use('/api/favorites', favoriteRoutes);
 
 
 

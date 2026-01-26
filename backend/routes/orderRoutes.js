@@ -4,6 +4,7 @@ const router = express.Router();
 const Order = require('../models/Order');
 const User = require('../models/User');
 const Product = require('../models/Product'); // ✅ IMPORTANT: Add this import
+const Notification = require('../models/Notification');
 
 // POST: Save successful order from checkout
 router.post('/success', async (req, res) => {
@@ -98,6 +99,27 @@ router.post('/success', async (req, res) => {
     console.log("✅ Order saved successfully:", newOrder._id);
     console.log("✅ Stock updated for all products");
     
+    // Create notification for admin
+    try {
+      const user = await User.findById(userId);
+      const username = user ? user.username : 'A customer';
+      const itemCount = orderItems.reduce((sum, item) => sum + item.qty, 0);
+      
+      const notification = new Notification({
+        type: 'order',
+        title: 'New Order Received',
+        message: `${username} placed an order for ${itemCount} item${itemCount > 1 ? 's' : ''} worth $${totalAmount.toFixed(2)}`,
+        orderId: newOrder._id,
+        userId: userId
+      });
+      
+      await notification.save();
+      console.log("🔔 Notification created for order:", newOrder._id);
+    } catch (notifError) {
+      console.error("⚠️ Failed to create notification:", notifError);
+      // Don't fail the order if notification creation fails
+    }
+    
     res.status(201).json({ 
       message: "Order recorded and stock updated", 
       order: newOrder 
@@ -120,6 +142,20 @@ router.get('/', async (req, res) => {
     res.json(orders);
   } catch (error) {
     console.error("Fetch orders error:", error);
+    res.status(500).json({ message: "Failed to fetch orders" });
+  }
+});
+
+// GET: user's own orders
+router.get('/my-orders/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const orders = await Order.find({ user: userId })
+      .sort({ createdAt: -1 })
+      .populate('orderItems.product', 'name image');
+    res.json(orders);
+  } catch (error) {
+    console.error("Fetch user orders error:", error);
     res.status(500).json({ message: "Failed to fetch orders" });
   }
 });
