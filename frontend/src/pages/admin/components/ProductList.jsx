@@ -87,7 +87,7 @@ const handleSubmit = async (e, finalData) => {
   
   const url = isEditing 
     ? `${import.meta.env.VITE_API_URL}/api/products/${editId}` 
-    : '${import.meta.env.VITE_API_URL}/api/products';
+    : `${import.meta.env.VITE_API_URL}/api/products`;
   
   const method = isEditing ? 'PUT' : 'POST';
 
