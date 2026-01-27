@@ -23,7 +23,7 @@ dotenv.config();
 console.log("Checking DB URI:", process.env.MONGO_URI ? "URI is loaded" : "URI is MISSING");
 console.log("Checking PORT:", process.env.PORT);
 
-// 1. WEBHOOK ROUTE - MUST be before express.json()
+
 app.post('/api/webhook', express.raw({ type: 'application/json' }), (req, res) => {
     const sig = req.headers['stripe-signature'];
     let event;
@@ -44,8 +44,12 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), (req, res) =
     res.json({ received: true });
 });
 
-// 2. MIDDLEWARE - After Webhook
+
 app.use(cors()); 
+app.use(cors({
+  origin: "https://es-comm.vercel.app" 
+}));
+
 app.use(express.json()); 
 app.use('/api/sales', salesRoutes);
 app.use('/api/auth', AuthRoutes);
@@ -87,7 +91,7 @@ app.get('/api/products', async (req, res) => {
     }
 });
 
-// Get single product (with category details)
+
 app.get('/api/products/:id', async (req, res) => {
     try {
         const product = await Product.findById(req.params.id)
@@ -110,7 +114,7 @@ app.post('/api/products', async (req, res) => {
     }
 });
 
-// PUT (Update) a product
+
 app.put('/api/products/:id', async (req, res) => {
     try {
         const updatedProduct = await Product.findByIdAndUpdate(

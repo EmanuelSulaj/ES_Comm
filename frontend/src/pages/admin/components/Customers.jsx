@@ -16,7 +16,7 @@ const Customers = () => {
     setModalLoading(true);
     setShowModal(true);
     try {
-      const response = await fetch(`http://localhost:5000/api/admin/customer-orders/${userId}`);
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/customer-orders/${userId}`);
       const data = await response.json();
       setSelectedOrders(data);
     } catch (error) {
@@ -30,7 +30,7 @@ const Customers = () => {
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/admin/customers-report');
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/customers-report`);
         const data = await response.json();
         
         setCustomers(Array.isArray(data) ? data : []);

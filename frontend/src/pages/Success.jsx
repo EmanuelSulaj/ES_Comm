@@ -26,7 +26,7 @@ const Success = () => {
       try {
         console.log("📦 Sending order to backend...");
         
-        const response = await fetch('http://localhost:5000/api/orders/success', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/success`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

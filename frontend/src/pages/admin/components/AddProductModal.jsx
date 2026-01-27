@@ -11,7 +11,7 @@ function AddProductModal({ isOpen, onClose, onSubmit, formData, setFormData, isE
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/categories');
+        const res = await fetch('${import.meta.env.VITE_API_URL}/api/categories');
         if (!res.ok) throw new Error("Failed to fetch");
         const data = await res.json();
         setCategories(data);

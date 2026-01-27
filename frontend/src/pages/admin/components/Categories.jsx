@@ -17,7 +17,7 @@ function Categories() {
 
   const fetchCategories = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/categories');
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/categories`);
       const data = await res.json();
       setCategories(data);
     } catch (err) { console.error("Error fetching:", err); }
@@ -26,7 +26,7 @@ function Categories() {
   // 2. Updated Add Logic to talk to Backend
   const handleAddCategory = async (categoryData) => {
     try {
-      const res = await fetch('http://localhost:5000/api/categories', {
+      const res = await fetch('${import.meta.env.VITE_API_URL}/api/categories', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
       
@@ -52,7 +52,7 @@ function Categories() {
 
 const handleUpdateCategory = async (name, description) => { 
   try {
-    const response = await fetch(`http://localhost:5000/api/categories/${editingCategory._id}`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/categories/${editingCategory._id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ 
@@ -74,7 +74,7 @@ const handleUpdateCategory = async (name, description) => {
   // 3. Delete Logic
   const handleDelete = async (id) => {
     if (window.confirm("Delete this category?")) {
-      await fetch(`http://localhost:5000/api/categories/${id}`, { method: 'DELETE' });
+      await fetch(`${import.meta.env.VITE_API_URL}/api/categories/${id}`, { method: 'DELETE' });
       fetchCategories();
     }
   };

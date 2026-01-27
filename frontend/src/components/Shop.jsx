@@ -20,8 +20,8 @@ const Shop = () => {
       try {
         
         const [prodRes, catRes] = await Promise.all([
-          fetch('http://localhost:5000/api/products'),
-          fetch('http://localhost:5000/api/categories')
+          fetch(`${import.meta.env.VITE_API_URL}/api/products`),
+          fetch(`${import.meta.env.VITE_API_URL}/api/categories`)
         ]);
         
         const prodData = await prodRes.json();

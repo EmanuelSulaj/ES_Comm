@@ -35,7 +35,7 @@ useEffect(() => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/products');
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/products`);
         const data = await res.json();
       
         const normalized = data.map(p => ({ stock: 0, ...p }));
@@ -58,7 +58,7 @@ useEffect(() => {
   
   const updateStock = async (id, amount) => {
     try {
-      await fetch(`http://localhost:5000/api/inventory/${id}/adjust`, {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/inventory/${id}/adjust`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ amount })
@@ -85,7 +85,7 @@ useEffect(() => {
     }
 
     try {
-      await fetch(`http://localhost:5000/api/inventory/${id}/adjust`, {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/inventory/${id}/adjust`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ stock: stockValue })

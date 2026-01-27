@@ -22,10 +22,10 @@ function Dashboard() {
       console.log("🚀 Frontend: Fetching all dashboard data...");
       
       const [statsRes, trendRes, categoryRes, topProductsRes] = await Promise.all([
-        fetch('http://localhost:5000/api/admin/dashboard-stats'),
-        fetch('http://localhost:5000/api/admin/sales-trend'),
-        fetch('http://localhost:5000/api/admin/category-distribution'),
-        fetch('http://localhost:5000/api/admin/top-products')
+        fetch(`${import.meta.env.VITE_API_URL}/api/admin/dashboard-stats`),
+        fetch(`${import.meta.env.VITE_API_URL}/api/admin/sales-trend`),
+        fetch(`${import.meta.env.VITE_API_URL}/api/admin/category-distribution`),
+        fetch(`${import.meta.env.VITE_API_URL}/api/admin/top-products`)
       ]);
 
       const statsResult = await statsRes.json();

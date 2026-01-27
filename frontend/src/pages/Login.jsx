@@ -27,13 +27,13 @@ function Login() {
    
     const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
     
-    // Prepare the body based on Login vs Register
+    
     const requestBody = isLogin 
-      ? { identifier: formData.email, password: formData.password } // identifier can be email or username
+      ? { identifier: formData.email, password: formData.password } 
       : { username: formData.username, email: formData.email, password: formData.password };
 
     try {
-      const response = await fetch(`http://localhost:5000${endpoint}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}${endpoint}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

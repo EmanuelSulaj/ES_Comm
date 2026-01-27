@@ -29,7 +29,7 @@ function Profile() {
 
   const fetchUserOrders = async (userId) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/orders/my-orders/${userId}`);
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/my-orders/${userId}`);
       if (response.ok) {
         const data = await response.json();
         setOrders(data);

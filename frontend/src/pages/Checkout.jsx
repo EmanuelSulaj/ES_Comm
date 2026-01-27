@@ -41,7 +41,7 @@ const CheckoutForm = () => {
 
     try {
     
-      const response = await fetch('http://localhost:5000/api/create-payment-intent', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/create-payment-intent`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ amount: Math.round(total * 100) }),

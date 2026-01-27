@@ -25,7 +25,7 @@ export const FavoritesProvider = ({ children }) => {
 
     try {
       if (showLoading) setLoading(true);
-      const response = await fetch(`http://localhost:5000/api/favorites/${user.id || user._id}`);
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/favorites/${user.id || user._id}`);
       if (response.ok) {
         const data = await response.json();
         setFavorites(data);
@@ -67,7 +67,7 @@ export const FavoritesProvider = ({ children }) => {
       setFavorites(prev => [...prev, { user: user.id || user._id, product: productToAdd, _id: `temp-${Date.now()}` }]);
     } else {
       // Fetch product details in background, but don't block UI
-      fetch(`http://localhost:5000/api/products/${productId}`)
+      fetch(`${import.meta.env.VITE_API_URL}/api/products/${productId}`)
         .then(res => res.ok ? res.json() : null)
         .then(product => {
           if (product) {
@@ -85,7 +85,7 @@ export const FavoritesProvider = ({ children }) => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/favorites', {
+      const response = await fetch('${import.meta.env.VITE_API_URL}/api/favorites', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -146,7 +146,7 @@ export const FavoritesProvider = ({ children }) => {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/favorites/${user.id || user._id}/${productId}`,
+        `${import.meta.env.VITE_API_URL}/api/favorites/${user.id || user._id}/${productId}`,
         { method: 'DELETE' }
       );
 

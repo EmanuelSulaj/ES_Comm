@@ -12,7 +12,7 @@ const SalesAnalytics = () => {
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/sales/dashboard');
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/sales/dashboard`);
         const json = await res.json();
         setData(json); 
         setLoading(false);

@@ -9,7 +9,7 @@ export const NotificationProvider = ({ children }) => {
 
   const fetchNotifications = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/notifications');
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/notifications`);
       if (response.ok) {
         const data = await response.json();
         setNotifications(data);
@@ -23,7 +23,7 @@ export const NotificationProvider = ({ children }) => {
 
   const fetchUnreadCount = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/notifications/unread-count');
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/notifications/unread-count`);
       if (response.ok) {
         const data = await response.json();
         setUnreadCount(data.count);
@@ -35,7 +35,7 @@ export const NotificationProvider = ({ children }) => {
 
   const markAsRead = async (notificationId) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/notifications/${notificationId}/read`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/notifications/${notificationId}/read`, {
         method: 'PUT'
       });
       if (response.ok) {
@@ -53,7 +53,7 @@ export const NotificationProvider = ({ children }) => {
 
   const markAllAsRead = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/notifications/mark-all-read', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/notifications/mark-all-read`, {
         method: 'PUT'
       });
       if (response.ok) {

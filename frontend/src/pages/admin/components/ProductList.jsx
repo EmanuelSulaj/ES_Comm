@@ -44,7 +44,7 @@ function ProductList() {
   // 2. Fetch Products
   const fetchProducts = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/products');
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products`);
       if (!response.ok) return;
       const data = await response.json();
       setProducts(data);
@@ -86,8 +86,8 @@ const handleSubmit = async (e, finalData) => {
   e.preventDefault();
   
   const url = isEditing 
-    ? `http://localhost:5000/api/products/${editId}` 
-    : 'http://localhost:5000/api/products';
+    ? `${import.meta.env.VITE_API_URL}/api/products/${editId}` 
+    : '${import.meta.env.VITE_API_URL}/api/products';
   
   const method = isEditing ? 'PUT' : 'POST';
 
@@ -112,7 +112,7 @@ const handleSubmit = async (e, finalData) => {
   const handleDelete = async (productId) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
       try {
-        const response = await fetch(`http://localhost:5000/api/products/${productId}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/${productId}`, {
           method: 'DELETE',
         });
         if (response.ok) {
