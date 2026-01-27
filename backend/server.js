@@ -11,7 +11,7 @@ const salesRoutes = require('./routes/Sales');
 const AuthRoutes = require('./routes/Auth');
 const orderRoutes = require('./routes/orderRoutes');
 const adminRoutes = require('./routes/adminRoutes');
-const InventoryRoutes = require('./routes/inventory');
+const InventoryRoutes = require('./routes/Inventory');
 const notificationRoutes = require('./routes/notificationRoutes');
 const favoriteRoutes = require('./routes/favoriteRoutes');  
 
