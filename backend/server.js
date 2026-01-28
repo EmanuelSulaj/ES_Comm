@@ -45,9 +45,14 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), (req, res) =
 });
 
 
-app.use(cors()); 
+
 app.use(cors({
-  origin: "https://es-comm.vercel.app" 
+  origin: [
+    "https://es-comm.vercel.app", 
+    "http://localhost:5173", 
+    "http://localhost:3000"  
+  ],
+  credentials: true
 }));
 
 app.use(express.json()); 
@@ -215,4 +220,16 @@ mongoose.connect(process.env.MONGO_URI)
 
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+
+    // This block must be INSIDE the app.listen curly braces
+    if (app._router && app._router.stack) {
+        app._router.stack.forEach((r) => {
+            if (r.route && r.route.path) {
+                console.log(`Available Route: ${Object.keys(r.route.methods).join(', ').toUpperCase()} ${r.route.path}`);
+            }
+        });
+    }
+}); 
+

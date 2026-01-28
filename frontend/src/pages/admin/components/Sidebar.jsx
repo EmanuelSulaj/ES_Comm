@@ -16,7 +16,7 @@ function Sidebar({ productsSubmenuOpen, setProductsSubmenuOpen }) {
         {menuItems.map((item) => (
           <div key={item.id}>
             {item.id === 'products' ? (
-              /* THE DROPDOWN TOGGLE BUTTON */
+              
               <button
                 className={`nav-item ${productsSubmenuOpen ? 'submenu-open' : ''}`}
                 onClick={() => setProductsSubmenuOpen(!productsSubmenuOpen)}
@@ -33,7 +33,7 @@ function Sidebar({ productsSubmenuOpen, setProductsSubmenuOpen }) {
                 </svg>
               </button>
             ) : (
-              /* STANDARD NAV LINKS */
+              
               <NavLink
                 to={item.id === 'dashboard' ? '/admin' : `/admin/${item.id}`}
                 end={item.id === 'dashboard'} 

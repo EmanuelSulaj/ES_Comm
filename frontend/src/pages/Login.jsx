@@ -4,8 +4,10 @@ import './Login.css';
 
 function Login() {
   const [isLogin, setIsLogin] = useState(true);
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     username: '', 
+    email: '',
     password: '',
     confirmPassword: ''
   });
@@ -19,15 +21,13 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(""); // Clear any old errors
 
     if (!isLogin && formData.password !== formData.confirmPassword) {
-      return alert("Passwords do not match!");
+      return setError("Passwords do not match!");
     }
 
-   
     const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
-    
-    
     const requestBody = isLogin 
       ? { identifier: formData.email, password: formData.password } 
       : { username: formData.username, email: formData.email, password: formData.password };
@@ -35,10 +35,8 @@ function Login() {
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}${endpoint}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestBody),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestBody) 
       });
 
       const data = await response.json();
@@ -47,22 +45,16 @@ function Login() {
         if (isLogin) {
           localStorage.setItem('token', data.token);
           localStorage.setItem('user', JSON.stringify(data.user));
-
-          if (data.user.role === 'admin') {
-            window.location.href = '/admin';
-          } else {
-            window.location.href = '/'; 
-          }
+          window.location.href = data.user.role === 'admin' ? '/admin' : '/';
         } else {
-          alert("Registration successful! Please login.");
-          setIsLogin(true); // Switch to login tab after registration
+          alert("Registration successful!");
+          setIsLogin(true); 
         }
-      } else {
-        alert(data.message || "Something went wrong");
+     } else {
+        setError("Incorrect email or password!"); 
       }
-    } catch (error) {
-      console.error('Connection Error:', error);
-      alert('Failed to connect to the server.');
+    } catch (err) {
+      setError("Failed to connect to server.");
     }
   };
 
@@ -100,7 +92,7 @@ function Login() {
             </div>
 
             <form onSubmit={handleSubmit} className="login-form">
-              {/* --- USERNAME FIELD (Only for Sign Up) --- */}
+              
               {!isLogin && (
                 <div className="form-group">
                   <label htmlFor="username">Username</label>
@@ -119,7 +111,7 @@ function Login() {
               <div className="form-group">
                 <label htmlFor="email">{isLogin ? "Username or Email" : "Email Address"}</label>
                 <input
-                  type={isLogin ? "text" : "email"} // Allows username typing in login
+                  type={isLogin ? "text" : "email"} 
                   id="email"
                   name="email"
                   placeholder={isLogin ? "Enter username or email" : "Enter your email"}
@@ -140,7 +132,8 @@ function Login() {
                   onChange={handleChange}
                   required
                 />
-              </div>
+                {isLogin && error && <p className="error-text-inline">{error}</p>}
+                </div>
 
               {!isLogin && (
                 <div className="form-group">

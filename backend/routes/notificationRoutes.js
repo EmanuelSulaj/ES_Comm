@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
       .populate('orderId', 'totalAmount createdAt')
       .populate('userId', 'username email')
       .sort({ createdAt: -1 })
-      .limit(100); // Limit to last 100 notifications
+      .limit(100); 
     
     res.json(notifications);
   } catch (error) {
